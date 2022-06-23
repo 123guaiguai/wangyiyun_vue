@@ -1,6 +1,6 @@
 <template>
   <div>
-  <top-nav @save="save"></top-nav>
+  <top-nav></top-nav>
   <swiper-top></swiper-top>
   <IconList></IconList>
   <MusicList></MusicList>

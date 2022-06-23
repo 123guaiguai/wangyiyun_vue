@@ -24,18 +24,18 @@
       @canplay="canplaysong"
     ></audio>
   </div>
-  <div style="overflow: hidden;; width: 0;height:0;">
+  <div style="overflow: hidden; width: 0; height: 0">
     <van-popup
       v-model:show="detailShow"
       position="right"
-      :style="{ height: '100%', width:'100%' }"
+      :style="{ height: '100%', width: '100%' }"
     >
       <detail-music
         :musicdetail="playList[playListIndex]"
         :play="play"
         :isbtnshow="isbtnshow"
-        :replay="replay"
         :load="load"
+        :replay="replay"
       ></detail-music>
     </van-popup>
   </div>
@@ -50,10 +50,9 @@ export default {
       "playListIndex",
       "isbtnshow",
       "detailShow",
-      "currentTime",
       "isFooterShow",
-      "duration",
       "isPaused",
+      "duration",
     ]),
   },
   data() {
@@ -83,12 +82,18 @@ export default {
       this.InterVal = setInterval(() => {
         this.updataCurrentTime(this.$refs.audio.currentTime * 1000);
       }, 1000);
-    },
-    load(){
+    }, 
+    load() {
       this.$refs.audio.load();
     },
-    canplaysong:function(){//audio的canplay事件使audio缓加载，这样拿到的duration才不是NAN
+    canplaysong: function () {
+      //audio的canplay事件使audio缓加载，这样拿到的duration才不是NAN
       this.updataDuration(this.$refs.audio.duration * 1000);
+      this.updataCurrentTime(this.$refs.audio.currentTime * 1000);
+    },
+    replay:function(time){//拖动进度条改变播放时间
+      this.updataCurrentTime(time);
+      this.$refs.audio.currentTime=time/1000;//注意这里传过来的参数time实质是store里的currentTime,这个是秒化为得毫秒，所以必须除以1000
     },
     ...mapMutations([
       "updataIsbtnShow",
@@ -106,19 +111,19 @@ export default {
       this.$refs.audio.autoplay = true;
       this.updataIsbtnShow(false);
     },
-    isbtnshow:function(){
-      if(!this.isbtnshow)
-      {
-        this.getTime();//歌曲播放，调用getTime
+    isbtnshow: function () {
+      if (!this.isbtnshow) {
+        this.getTime(); //歌曲播放，调用getTime
         this.updataDuration(this.$refs.audio.duration * 1000);
-      }else{
+      } else {
         clearInterval(this.InterVal); //歌曲暂停，清除定时器
       }
     },
-    isPaused:function(){//isPaused改变，暂停底部组件的播放
+    isPaused: function () {
+      //isPaused改变，暂停底部组件的播放
       this.$refs.audio.pause();
       this.updataIsbtnShow(true);
-    }
+    },
   },
   components: {
     DetailMusic,

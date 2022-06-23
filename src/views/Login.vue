@@ -35,7 +35,7 @@ export default {
       let res = await getLogin({ phone: this.phone, password: this.password });
       console.log(res);
       this.$store.commit('updataToken',res.data.token);
-      localStorage.setItem('token',res.data.token);//把token储存在localStorage中
+      localStorage.setItem('token',res.data.token);//把token储存在localStorage
       let result =await getUserInfor(res.data.account.id);
       this.$store.commit('updataUserInfor',result.data.profile);
       // console.log(this.$store.state.UserInfor);

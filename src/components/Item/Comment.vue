@@ -59,7 +59,7 @@
         <span class="recall">
           20条回复
         </span>
-        <svg class="icon" aria-hidden="true" @click="updatadetailShowComment">
+        <svg class="icon" aria-hidden="true">
       <use xlink:href="#icon-youjiantou"></use>
     </svg>
       </div>

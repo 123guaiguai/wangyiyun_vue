@@ -76,8 +76,9 @@
       <input
         type="range"
         class="range"
+        @change="RunBar"
         min="0"
-        v-model="currentTime"
+        v-model="currenttime"
         :max="duration"
         step=".01rem"
       />
@@ -141,7 +142,7 @@ import { getComment } from "@/request/api/item.js";
 import "@/assets/iconfont/font_3439707_zunm201gu6b/iconfont.js"
 import "@/assets/iconfont/font_3439707_zunm201gu6b/iconfont.css"
 export default {
-  props: ["musicdetail", "isbtnshow", "play","load"],
+  props: ["musicdetail", "isbtnshow", "play","load","replay"],
   components: {
     Vue3Marquee,
     Comment,
@@ -198,6 +199,7 @@ export default {
       isLyricShow: true,
       comment: [],
       total: 0,
+      currenttime:0,//把store里的currenttime拿来，这样就从只读属性变为可写属性
     };
   },
   methods: {
@@ -228,6 +230,9 @@ export default {
       this.load();
       this.play();
     },
+    RunBar:function(e){
+      this.replay(e.target.value);
+    },
     ...mapMutations([
       "updatadetailShow",
       "updataListIndex",
@@ -237,11 +242,10 @@ export default {
   },
   watch: {
     currentTime() {
+      this.currenttime=this.currentTime;
       let p = document.querySelector(".actives");
       if (p != null) {
         let container = document.querySelector(".MusicLyric");
-        // console.log([container]);
-        // console.log([p]);
         let target = p.offsetTop - 260;
         animation(container, target);
         if (this.currentTime === this.duration) {
